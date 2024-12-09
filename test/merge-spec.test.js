@@ -49,13 +49,15 @@ test('merge with custom merge', async (t) => {
   const mergedSpec = await mergeSpec([
     path.join(__dirname, 'openapi/spec.json'),
     path.join(__dirname, 'openapi/spec2.json'),
-  ], undefined, (spec) => {
-    return {
-      ...spec[0],
-      paths: {
-        ...spec[0].paths,
-        ...spec[1].paths,
-      },
+  ], {
+    customMerge: (spec) => {
+      return {
+        ...spec[0],
+        paths: {
+          ...spec[0].paths,
+          ...spec[1].paths,
+        },
+      }
     }
   })
 
@@ -73,7 +75,7 @@ test('custom merge not a function', async (t) => {
     await mergeSpec([
       path.join(__dirname, 'openapi/spec.json'),
       path.join(__dirname, 'openapi/spec2.json'),
-    ], undefined, 1)
+    ], { customMerge: 1 })
   } catch (e) {
     t.assert.ok(e)
     t.assert.strictEqual(e.message, '"customMerge" must be a function')
