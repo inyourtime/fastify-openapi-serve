@@ -2,47 +2,50 @@
 
 const path = require('node:path')
 const { test } = require('node:test')
-const assert = require('node:assert')
 
 const { mergeSpec } = require('../lib/merge-spec')
 
-test('merge one spec file', async () => {
+test('merge one spec file', async (t) => {
+  t.plan(3)
   const mergedSpec = await mergeSpec([path.join(__dirname, 'openapi/spec.json')])
 
-  assert.strictEqual(mergedSpec.openapi, '3.0.0')
-  assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
-  assert.deepStrictEqual(mergedSpec.paths, {
+  t.assert.strictEqual(mergedSpec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(mergedSpec.paths, {
     '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } }
   })
 })
 
-test('merge with duplicate paths', async () => {
+test('merge with duplicate paths', async (t) => {
+  t.plan(2)
   try {
     await mergeSpec([
       path.join(__dirname, 'openapi/spec.json'),
       path.join(__dirname, 'openapi/spec.json'),
     ])
   } catch (e) {
-    assert.ok(e)
-    assert.match(e.message, /Error merging OpenAPI specs:/)
+    t.assert.ok(e)
+    t.assert.match(e.message, /Error merging OpenAPI specs:/)
   }
 })
 
-test('merge multiple spec files', async () => {
+test('merge multiple spec files', async (t) => {
+  t.plan(3)
   const mergedSpec = await mergeSpec([
     path.join(__dirname, 'openapi/spec.json'),
     path.join(__dirname, 'openapi/spec2.json'),
   ])
 
-  assert.strictEqual(mergedSpec.openapi, '3.0.0')
-  assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
-  assert.deepStrictEqual(mergedSpec.paths, {
+  t.assert.strictEqual(mergedSpec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(mergedSpec.paths, {
     '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
     '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
   })
 })
 
-test('merge with custom merge', async () => {
+test('merge with custom merge', async (t) => {
+  t.plan(3)
   const mergedSpec = await mergeSpec([
     path.join(__dirname, 'openapi/spec.json'),
     path.join(__dirname, 'openapi/spec2.json'),
@@ -56,67 +59,72 @@ test('merge with custom merge', async () => {
     }
   })
 
-  assert.strictEqual(mergedSpec.openapi, '3.0.0')
-  assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
-  assert.deepStrictEqual(mergedSpec.paths, {
+  t.assert.strictEqual(mergedSpec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(mergedSpec.paths, {
     '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
     '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
   })
 })
 
-test('custom merge not a function', async () => {
+test('custom merge not a function', async (t) => {
+  t.plan(2)
   try {
     await mergeSpec([
       path.join(__dirname, 'openapi/spec.json'),
       path.join(__dirname, 'openapi/spec2.json'),
     ], undefined, 1)
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"customMerge" must be a function')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"customMerge" must be a function')
   }
 })
 
-test('merge with empty spec', async () => {
+test('merge with empty spec', async (t) => {
+  t.plan(2)
   try {
     await mergeSpec([])
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specPaths" option array requires one or more paths')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specPaths" option array requires one or more paths')
   }
 })
 
-test('merge with YAML file', async () => {
+test('merge with YAML file', async (t) => {
+  t.plan(3)
   const mergedSpec = await mergeSpec([
     path.join(__dirname, 'openapi/spec.yaml'),
     path.join(__dirname, 'openapi/spec2.yaml'),
   ])
 
-  assert.strictEqual(mergedSpec.openapi, '3.0.0')
-  assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
-  assert.deepStrictEqual(mergedSpec.paths, {
+  t.assert.strictEqual(mergedSpec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(mergedSpec.paths, {
     '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
     '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
   })
 })
 
-test('merge with JSON and YAML file', async () => {
+test('merge with JSON and YAML file', async (t) => {
+  t.plan(3)
   const mergedSpec = await mergeSpec([
     path.join(__dirname, 'openapi/spec.json'),
     path.join(__dirname, 'openapi/spec2.yaml'),
   ])
 
-  assert.strictEqual(mergedSpec.openapi, '3.0.0')
-  assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
-  assert.deepStrictEqual(mergedSpec.paths, {
+  t.assert.strictEqual(mergedSpec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(mergedSpec.paths, {
     '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
     '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
   })
 })
 
-test('merge with empty JSON file', async () => {
+test('merge with empty JSON file', async (t) => {
+  t.plan(3)
   const mergedSpec = await mergeSpec([path.join(__dirname, 'openapi/empty.json')])
 
-  assert.strictEqual(mergedSpec.openapi, '3.0.0')
-  assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
-  assert.deepStrictEqual(mergedSpec.paths, {})
+  t.assert.strictEqual(mergedSpec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(mergedSpec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(mergedSpec.paths, {})
 })

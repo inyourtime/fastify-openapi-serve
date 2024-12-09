@@ -2,7 +2,6 @@
 
 const path = require('node:path')
 const { test } = require('node:test')
-const assert = require('node:assert')
 
 const Fastify = require('fastify')
 const { checkSpecDir } = require('../lib/spec-dir')
@@ -15,81 +14,88 @@ test.before(() => {
 
 test.after(() => fastify.close())
 
-test('no specDir', () => {
+test('no specDir', (t) => {
+  t.plan(2)
   try {
     checkSpecDir(fastify, undefined)
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specDir" option is required')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specDir" option is required')
   }
 })
 
-test('specDir is not a string', () => {
+test('specDir is not a string', (t) => {
+  t.plan(2)
   try {
     checkSpecDir(fastify, 1)
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specDir" option must be a string or an array of strings')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specDir" option must be a string or an array of strings')
   }
 })
 
-test('specDir is not an absolute path', () => {
+test('specDir is not an absolute path', (t) => {
+  t.plan(2)
   try {
     checkSpecDir(fastify, 'foo')
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specDir" option must be an absolute path')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specDir" option must be an absolute path')
   }
 })
 
-test('specDir does not exist', () => {
+test('specDir does not exist', (t) => {
   try {
     checkSpecDir(fastify, '/foo')
   } catch (e) {
-    assert.ifError(e)
+    t.assert.ifError(e)
   }
 })
 
-test('specDir is not a directory', () => {
+test('specDir is not a directory', (t) => {
+  t.plan(2)
   try {
     checkSpecDir(fastify, path.join(__dirname, 'tmp', 'test-file.txt'))
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specDir" option must point to a directory')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specDir" option must point to a directory')
   }
 })
 
-test('specDir is a array', () => {
+test('specDir is a array', (t) => {
   try {
     checkSpecDir(fastify, [path.join(__dirname, 'openapi'), path.join(__dirname, 'tmp')])
   } catch (e) {
-    assert.ifError(e)
+    t.assert.ifError(e)
   }
 })
 
-test('specDir is a empty array', () => {
+test('specDir is a empty array', (t) => {
+  t.plan(2)
   try {
     checkSpecDir(fastify, [])
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specDir" option array requires one or more paths')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specDir" option array requires one or more paths')
   }
 })
 
-test('specDir contains duplicate paths', () => {
+test('specDir contains duplicate paths', (t) => {
+  t.plan(2)
   try {
     checkSpecDir(fastify, [path.join(__dirname, 'openapi'), path.join(__dirname, 'openapi')])
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specDir" option array contains one or more duplicate paths')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specDir" option array contains one or more duplicate paths')
   }
 })
 
-test('specDir array is containing non strings path', () => {
+test('specDir array is containing non strings path', (t) => {
+  t.plan(2)
   try {
     checkSpecDir(fastify, [1])
   } catch (e) {
-    assert.ok(e)
-    assert.strictEqual(e.message, '"specDir" option must be a string')
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"specDir" option must be a string')
   }
 })
