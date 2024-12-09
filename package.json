@@ -16,7 +16,13 @@
     "type": "git",
     "url": "git+https://github.com/inyourtime/fastify-openapi-merge.git"
   },
-  "keywords": [],
+  "keywords": [
+    "fastify",
+    "openapi",
+    "swagger",
+    "merge",
+    "serve"
+  ],
   "author": "inyourtime (https://github.com/inyourtime)",
   "license": "MIT",
   "bugs": {
