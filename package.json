@@ -1,6 +1,7 @@
 {
   "name": "fastify-openapi-merge",
   "version": "1.0.0",
+  "description": "Fastify OpenAPI Merge",
   "main": "index.js",
   "type": "commonjs",
   "types": "types/index.d.ts",
@@ -10,10 +11,16 @@
     "lint": "eslint",
     "lint:fix": "eslint --fix"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/inyourtime/fastify-openapi-merge.git"
+  },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "description": "",
+  "author": "inyourtime (https://github.com/inyourtime)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/inyourtime/fastify-openapi-merge/issues"
+  },
   "dependencies": {
     "fastify-plugin": "^5.0.1",
     "glob": "^11.0.0",
