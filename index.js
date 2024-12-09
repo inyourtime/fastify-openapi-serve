@@ -19,11 +19,11 @@ async function fastifyOpenapiMerge (fastify, opts) {
 
   for (const specPath of rootsSpec) {
     const files = await glob('**/*.{yaml,yml,json}', {
-      cwd: specPath, absolute: false, follow: true, nodir: true,
+      cwd: specPath, absolute: true, follow: true, nodir: true,
     })
 
     specFiles.push(...files.map((file) => {
-      return path.join(specPath, file).split(path.win32.sep).join(path.posix.sep)
+      return file.split(path.win32.sep).join(path.posix.sep)
     }))
   }
 
