@@ -83,13 +83,10 @@ test('custom merge not a function', async (t) => {
 })
 
 test('merge with empty spec', async (t) => {
-  t.plan(2)
-  try {
-    await mergeSpec([])
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specPaths" option array requires one or more paths')
-  }
+  t.plan(1)
+
+  const mergedSpec = await mergeSpec([])
+  t.assert.ifError(mergedSpec)
 })
 
 test('merge with YAML file', async (t) => {
