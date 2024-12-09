@@ -1,0 +1,14 @@
+{
+  "paths": {
+    "/info": {
+      "get": {
+        "summary": "Info",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    }
+  }
+}

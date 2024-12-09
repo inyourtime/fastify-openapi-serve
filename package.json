@@ -6,7 +6,7 @@
   "type": "commonjs",
   "types": "types/index.d.ts",
   "scripts": {
-    "test:unit": "c8 node --test",
+    "test:unit": "c8 --100 node --test",
     "test": "npm run test:unit",
     "lint": "eslint",
     "lint:fix": "eslint --fix"

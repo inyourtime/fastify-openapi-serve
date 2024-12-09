@@ -4,12 +4,13 @@ const path = require('node:path')
 
 const fp = require('fastify-plugin')
 const { glob } = require('glob')
+const YAML = require('yaml')
 
 const { checkSpecDir } = require('./lib/spec-dir')
-// const { mergeSpec } = require('./lib/merge-spec')
+const { mergeSpec } = require('./lib/merge-spec')
 
 async function fastifyOpenapiMerge (fastify, opts) {
-  // const openapiPath = opts.openapiPath || 'openapi'
+  const openapiPath = opts.openapiPath || '/openapi'
   const specDir = opts.specDir
 
   checkSpecDir(fastify, specDir)
@@ -27,8 +28,26 @@ async function fastifyOpenapiMerge (fastify, opts) {
     }))
   }
 
-  // const mergedSpec = mergeSpec(specFiles)
-  // console.log(mergedSpec)
+  fastify.route({
+    method: 'GET',
+    url: `${openapiPath}/json`,
+    handler: async () => {
+      const mergedSpec = await mergeSpec(specFiles)
+      return mergedSpec
+    },
+  })
+
+  fastify.route({
+    method: 'GET',
+    url: `${openapiPath}/yaml`,
+    handler: async (_, reply) => {
+      const mergedSpec = await mergeSpec(specFiles)
+      const yaml = YAML.stringify(mergedSpec)
+      return reply
+        .type('application/x-yaml')
+        .send(yaml)
+    },
+  })
 }
 
 module.exports = fp(fastifyOpenapiMerge, {
