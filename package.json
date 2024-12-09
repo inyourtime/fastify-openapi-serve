@@ -16,6 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/inyourtime/fastify-openapi-merge.git"
   },
+  "homepage": "https://github.com/inyourtime/fastify-openapi-merge#readme",
   "keywords": [
     "fastify",
     "openapi",
