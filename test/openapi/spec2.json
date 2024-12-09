@@ -1,13 +1,8 @@
 {
-  "openapi": "3.0.1",
-  "info": {
-    "title": "OpenAPI Spec",
-    "version": "1.0.0"
-  },
   "paths": {
-    "/foo": {
+    "/bar": {
       "get": {
-        "summary": "Foo",
+        "summary": "Bar",
         "responses": {
           "200": {
             "description": "OK"
