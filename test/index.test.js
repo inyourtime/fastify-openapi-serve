@@ -107,7 +107,7 @@ test('custom openapiPath', async (t) => {
 
   await fastify.register(fastifyOpenapiMerge, {
     specDir: path.join(__dirname, 'specs'),
-    openapiPath: '/custom',
+    routePrefix: '/custom',
   })
 
   await fastify.ready()
@@ -123,6 +123,75 @@ test('custom openapiPath', async (t) => {
   t.assert.strictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
   t.assert.strictEqual(spec.openapi, '3.0.0')
   t.assert.deepStrictEqual(spec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(spec.paths, {
+    '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
+    '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
+  })
+})
+
+test('custom merge', async (t) => {
+  t.plan(5)
+  const fastify = Fastify()
+
+  await fastify.register(fastifyOpenapiMerge, {
+    specDir: path.join(__dirname, 'specs'),
+    merge: (spec) => {
+      return {
+        ...spec[0],
+        paths: {
+          ...spec[0].paths,
+          ...spec[1].paths,
+        },
+      }
+    },
+  })
+
+  await fastify.ready()
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/openapi/json',
+  })
+
+  const spec = res.json()
+
+  t.assert.strictEqual(res.statusCode, 200)
+  t.assert.strictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
+  t.assert.strictEqual(spec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(spec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(spec.paths, {
+    '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
+    '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
+  })
+})
+
+test('specDefinition custom', async (t) => {
+  t.plan(6)
+  const fastify = Fastify()
+
+  await fastify.register(fastifyOpenapiMerge, {
+    specDir: path.join(__dirname, 'specs'),
+    specDefinition: {
+      openapi: '3.0.0',
+      info: { title: 'Custom OpenAPI Spec', version: '1.0.0' },
+      servers: [{ url: 'http://localhost:3000' }],
+    },
+  })
+
+  await fastify.ready()
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/openapi/json',
+  })
+
+  const spec = res.json()
+
+  t.assert.strictEqual(res.statusCode, 200)
+  t.assert.strictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
+  t.assert.strictEqual(spec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(spec.info, { title: 'Custom OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(spec.servers, [{ url: 'http://localhost:3000' }])
   t.assert.deepStrictEqual(spec.paths, {
     '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
     '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
