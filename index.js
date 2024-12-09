@@ -4,7 +4,6 @@ const path = require('node:path')
 
 const fp = require('fastify-plugin')
 const { glob } = require('glob')
-const YAML = require('yaml')
 
 const { checkSpecDir } = require('./lib/spec-dir')
 const { mergeSpec } = require('./lib/merge-spec')
@@ -48,13 +47,12 @@ async function fastifyOpenapiMerge (fastify, opts) {
       const mergedSpec = await mergeSpec(specFiles, {
         customMerge: opts.merge,
         specDefinition: opts.specDefinition,
+        yaml: true
       })
-
-      const yaml = YAML.stringify(mergedSpec)
 
       return reply
         .type('application/x-yaml')
-        .send(yaml)
+        .send(mergedSpec)
     },
   })
 }
