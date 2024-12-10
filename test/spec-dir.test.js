@@ -15,87 +15,76 @@ test.before(() => {
 test.after(() => fastify.close())
 
 test('no specDir', (t) => {
-  t.plan(2)
-  try {
-    checkSpecDir(fastify, undefined)
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specDir" option is required')
-  }
+  t.plan(1)
+
+  t.assert.throws(() =>
+    checkSpecDir(fastify, undefined), {
+    message: '"specDir" option is required',
+  })
 })
 
 test('specDir is not a string', (t) => {
-  t.plan(2)
-  try {
-    checkSpecDir(fastify, 1)
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specDir" option must be a string or an array of strings')
-  }
+  t.plan(1)
+
+  t.assert.throws(() =>
+    checkSpecDir(fastify, 1), {
+    message: '"specDir" option must be a string or an array of strings',
+  })
 })
 
 test('specDir is not an absolute path', (t) => {
-  t.plan(2)
-  try {
-    checkSpecDir(fastify, 'foo')
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specDir" option must be an absolute path')
-  }
+  t.plan(1)
+
+  t.assert.throws(() =>
+    checkSpecDir(fastify, 'foo'), {
+    message: '"specDir" option must be an absolute path',
+  })
 })
 
 test('specDir does not exist', (t) => {
-  try {
-    checkSpecDir(fastify, '/foo')
-  } catch (e) {
-    t.assert.ifError(e)
-  }
+  t.plan(1)
+
+  t.assert.doesNotThrow(() => checkSpecDir(fastify, '/foo'))
 })
 
 test('specDir is not a directory', (t) => {
-  t.plan(2)
-  try {
-    checkSpecDir(fastify, path.join(__dirname, 'tmp', 'test-file.txt'))
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specDir" option must point to a directory')
-  }
+  t.plan(1)
+
+  t.assert.throws(() =>
+    checkSpecDir(fastify, path.join(__dirname, 'tmp', 'test-file.txt')), {
+    message: '"specDir" option must point to a directory',
+  })
 })
 
 test('specDir is a array', (t) => {
-  try {
-    checkSpecDir(fastify, [path.join(__dirname, 'openapi'), path.join(__dirname, 'tmp')])
-  } catch (e) {
-    t.assert.ifError(e)
-  }
+  t.plan(1)
+
+  t.assert.doesNotThrow(() => checkSpecDir(fastify, [path.join(__dirname, 'openapi'), path.join(__dirname, 'tmp')]))
 })
 
 test('specDir is a empty array', (t) => {
-  t.plan(2)
-  try {
-    checkSpecDir(fastify, [])
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specDir" option array requires one or more paths')
-  }
+  t.plan(1)
+
+  t.assert.throws(() =>
+    checkSpecDir(fastify, []), {
+    message: '"specDir" option array requires one or more paths',
+  })
 })
 
 test('specDir contains duplicate paths', (t) => {
-  t.plan(2)
-  try {
-    checkSpecDir(fastify, [path.join(__dirname, 'openapi'), path.join(__dirname, 'openapi')])
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specDir" option array contains one or more duplicate paths')
-  }
+  t.plan(1)
+
+  t.assert.throws(() =>
+    checkSpecDir(fastify, [path.join(__dirname, 'openapi'), path.join(__dirname, 'openapi')]), {
+    message: '"specDir" option array contains one or more duplicate paths',
+  })
 })
 
 test('specDir array is containing non strings path', (t) => {
-  t.plan(2)
-  try {
-    checkSpecDir(fastify, [1])
-  } catch (e) {
-    t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"specDir" option must be a string')
-  }
+  t.plan(1)
+
+  t.assert.throws(() =>
+    checkSpecDir(fastify, [1]), {
+    message: '"specDir" option must be a string',
+  })
 })

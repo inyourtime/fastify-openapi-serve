@@ -8,6 +8,9 @@ const { glob } = require('glob')
 const { checkSpecDir } = require('./lib/spec-dir')
 const { mergeSpec } = require('./lib/merge-spec')
 
+/**
+ * @type {import('fastify').FastifyPluginAsync}
+ */
 async function fastifyOpenapiServe (fastify, opts) {
   const openapiPath = opts.routePrefix || '/openapi'
   const specDir = opts.specDir
