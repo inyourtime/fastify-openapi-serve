@@ -2,13 +2,13 @@ import type { FastifyPluginAsync } from 'fastify'
 // eslint-disable-next-line camelcase
 import { OpenAPIV3, OpenAPIV3_1 } from 'openapi-types'
 
-type FastifyOpenapiMerge = FastifyPluginAsync<fastifyOpenapiMerge.FastifyOpenapiMergeOptions>
+type FastifyOpenapiServe = FastifyPluginAsync<fastifyOpenapiServe.FastifyOpenapiServeOptions>
 
-declare namespace fastifyOpenapiMerge {
+declare namespace fastifyOpenapiServe {
   // eslint-disable-next-line camelcase
   export type OpenAPIDocument = Partial<OpenAPIV3.Document | OpenAPIV3_1.Document>
 
-  export interface FastifyOpenapiMergeOptions {
+  export interface FastifyOpenapiServeOptions {
     /**
      * OpenAPI spec directory
      */
@@ -30,9 +30,9 @@ declare namespace fastifyOpenapiMerge {
     specDefinition?: OpenAPIDocument
   }
 
-  export const fastifyOpenapiMerge: FastifyOpenapiMerge
-  export { fastifyOpenapiMerge as default }
+  export const fastifyOpenapiServe: FastifyOpenapiServe
+  export { fastifyOpenapiServe as default }
 }
 
-declare function fastifyOpenapiMerge (...params: Parameters<FastifyOpenapiMerge>): ReturnType<FastifyOpenapiMerge>
-export = fastifyOpenapiMerge
+declare function fastifyOpenapiServe (...params: Parameters<FastifyOpenapiServe>): ReturnType<FastifyOpenapiServe>
+export = fastifyOpenapiServe

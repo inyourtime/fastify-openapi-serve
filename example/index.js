@@ -3,11 +3,11 @@ const path = require('node:path')
 const Fastify = require('fastify')
 const fastifyApiReference = require('@scalar/fastify-api-reference')
 
-const fastifyOpenapiMerge = require('..')
+const fastifyOpenapiServe = require('..')
 
 const fastify = Fastify()
 
-fastify.register(fastifyOpenapiMerge, {
+fastify.register(fastifyOpenapiServe, {
   specDir: path.join(__dirname, 'specs'),
   specDefinition: {
     openapi: '3.0.0',

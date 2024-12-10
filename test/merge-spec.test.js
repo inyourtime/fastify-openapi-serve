@@ -75,10 +75,10 @@ test('custom merge not a function', async (t) => {
     await mergeSpec([
       path.join(__dirname, 'openapi/spec.json'),
       path.join(__dirname, 'openapi/spec2.json'),
-    ], { customMerge: 1 })
+    ], { merge: 1 })
   } catch (e) {
     t.assert.ok(e)
-    t.assert.strictEqual(e.message, '"customMerge" must be a function')
+    t.assert.strictEqual(e.message, '"merge" option must be a function')
   }
 })
 

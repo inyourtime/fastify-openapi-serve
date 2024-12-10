@@ -8,11 +8,15 @@ const { glob } = require('glob')
 const { checkSpecDir } = require('./lib/spec-dir')
 const { mergeSpec } = require('./lib/merge-spec')
 
-async function fastifyOpenapiMerge (fastify, opts) {
+async function fastifyOpenapiServe (fastify, opts) {
   const openapiPath = opts.routePrefix || '/openapi'
   const specDir = opts.specDir
 
   checkSpecDir(fastify, specDir)
+
+  if (opts.merge && typeof opts.merge !== 'function') {
+    throw new Error('"merge" option must be a function')
+  }
 
   const rootsSpec = Array.isArray(specDir) ? specDir : [specDir]
   const specFiles = []
@@ -32,7 +36,7 @@ async function fastifyOpenapiMerge (fastify, opts) {
     url: `${openapiPath}/json`,
     handler: async () => {
       const mergedSpec = await mergeSpec(specFiles, {
-        customMerge: opts.merge,
+        merge: opts.merge,
         specDefinition: opts.specDefinition,
       })
 
@@ -45,7 +49,7 @@ async function fastifyOpenapiMerge (fastify, opts) {
     url: `${openapiPath}/yaml`,
     handler: async (_, reply) => {
       const mergedSpec = await mergeSpec(specFiles, {
-        customMerge: opts.merge,
+        merge: opts.merge,
         specDefinition: opts.specDefinition,
         yaml: true
       })
@@ -57,9 +61,9 @@ async function fastifyOpenapiMerge (fastify, opts) {
   })
 }
 
-module.exports = fp(fastifyOpenapiMerge, {
+module.exports = fp(fastifyOpenapiServe, {
   fastify: '5.x',
-  name: 'fastify-openapi-merge'
+  name: 'fastify-openapi-serve',
 })
-module.exports.default = fastifyOpenapiMerge
-module.exports.fastifyOpenapiMerge = fastifyOpenapiMerge
+module.exports.default = fastifyOpenapiServe
+module.exports.fastifyOpenapiServe = fastifyOpenapiServe
