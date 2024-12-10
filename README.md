@@ -1,6 +1,9 @@
 # fastify-openapi-serve
 
-`fastify-openapi-serve` is a `Fastify` plugin that merges OpenAPI specifications from multiple files and serves the merged output as JSON or YAML. This plugin simplifies managing modular OpenAPI specifications, enabling dynamic merging and serving of your API definitions.
+[![CI](https://github.com/inyourtime/fastify-openapi-serve/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/inyourtime/fastify-openapi-serve/actions/workflows/ci.yml)
+[![NPM version](https://img.shields.io/npm/v/fastify-openapi-serve.svg?style=flat)](https://www.npmjs.com/package/fastify-openapi-serve)
+
+Fastify plugin that merges OpenAPI specifications from multiple files and serves the merged output as JSON or YAML. This plugin simplifies managing modular OpenAPI specifications, enabling dynamic merging and serving of your API definitions.
 
 ## Installation
 
