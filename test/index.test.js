@@ -5,14 +5,14 @@ const path = require('node:path')
 
 const YAML = require('yaml')
 const Fastify = require('fastify')
-const fastifyOpenapiMerge = require('../index')
+const fastifyOpenapiServe = require('../index')
 
 test('require specDir', async (t) => {
   t.plan(2)
   const fastify = Fastify()
 
   try {
-    await fastify.register(fastifyOpenapiMerge, {})
+    await fastify.register(fastifyOpenapiServe, {})
   } catch (e) {
     t.assert.ok(e)
     t.assert.strictEqual(e.message, '"specDir" option is required')
@@ -23,7 +23,7 @@ test('merge with specDir (json response)', async (t) => {
   t.plan(5)
   const fastify = Fastify()
 
-  await fastify.register(fastifyOpenapiMerge, {
+  await fastify.register(fastifyOpenapiServe, {
     specDir: path.join(__dirname, 'specs'),
   })
 
@@ -50,7 +50,7 @@ test('merge with specDir (yaml response)', async (t) => {
   t.plan(5)
   const fastify = Fastify()
 
-  await fastify.register(fastifyOpenapiMerge, {
+  await fastify.register(fastifyOpenapiServe, {
     specDir: path.join(__dirname, 'specs'),
   })
 
@@ -77,7 +77,7 @@ test('merge with specDir array', async (t) => {
   t.plan(5)
   const fastify = Fastify()
 
-  await fastify.register(fastifyOpenapiMerge, {
+  await fastify.register(fastifyOpenapiServe, {
     specDir: [path.join(__dirname, 'specs'), path.join(__dirname, 'specs2')],
   })
 
@@ -105,7 +105,7 @@ test('custom openapiPath', async (t) => {
   t.plan(5)
   const fastify = Fastify()
 
-  await fastify.register(fastifyOpenapiMerge, {
+  await fastify.register(fastifyOpenapiServe, {
     specDir: path.join(__dirname, 'specs'),
     routePrefix: '/custom',
   })
@@ -133,7 +133,7 @@ test('custom merge', async (t) => {
   t.plan(5)
   const fastify = Fastify()
 
-  await fastify.register(fastifyOpenapiMerge, {
+  await fastify.register(fastifyOpenapiServe, {
     specDir: path.join(__dirname, 'specs'),
     merge: (spec) => {
       return {
@@ -169,7 +169,7 @@ test('specDefinition custom', async (t) => {
   t.plan(6)
   const fastify = Fastify()
 
-  await fastify.register(fastifyOpenapiMerge, {
+  await fastify.register(fastifyOpenapiServe, {
     specDir: path.join(__dirname, 'specs'),
     specDefinition: {
       openapi: '3.0.0',

@@ -1,7 +1,7 @@
 {
-  "name": "fastify-openapi-merge",
+  "name": "fastify-openapi-serve",
   "version": "1.0.4",
-  "description": "Fastify OpenAPI Merge",
+  "description": "Fastify OpenAPI Serve Plugin",
   "main": "index.js",
   "type": "commonjs",
   "types": "types/index.d.ts",
@@ -14,9 +14,9 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/inyourtime/fastify-openapi-merge.git"
+    "url": "git+https://github.com/inyourtime/fastify-openapi-serve.git"
   },
-  "homepage": "https://github.com/inyourtime/fastify-openapi-merge#readme",
+  "homepage": "https://github.com/inyourtime/fastify-openapi-serve#readme",
   "keywords": [
     "fastify",
     "openapi",
@@ -27,7 +27,7 @@
   "author": "inyourtime (https://github.com/inyourtime)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/inyourtime/fastify-openapi-merge/issues"
+    "url": "https://github.com/inyourtime/fastify-openapi-serve/issues"
   },
   "dependencies": {
     "fastify-plugin": "^5.0.1",

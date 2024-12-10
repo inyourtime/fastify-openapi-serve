@@ -8,7 +8,7 @@ const { glob } = require('glob')
 const { checkSpecDir } = require('./lib/spec-dir')
 const { mergeSpec } = require('./lib/merge-spec')
 
-async function fastifyOpenapiMerge (fastify, opts) {
+async function fastifyOpenapiServe (fastify, opts) {
   const openapiPath = opts.routePrefix || '/openapi'
   const specDir = opts.specDir
 
@@ -57,9 +57,9 @@ async function fastifyOpenapiMerge (fastify, opts) {
   })
 }
 
-module.exports = fp(fastifyOpenapiMerge, {
+module.exports = fp(fastifyOpenapiServe, {
   fastify: '5.x',
-  name: 'fastify-openapi-merge'
+  name: 'fastify-openapi-serve',
 })
-module.exports.default = fastifyOpenapiMerge
-module.exports.fastifyOpenapiMerge = fastifyOpenapiMerge
+module.exports.default = fastifyOpenapiServe
+module.exports.fastifyOpenapiServe = fastifyOpenapiServe

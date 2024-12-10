@@ -1,12 +1,12 @@
-# fastify-openapi-merge
+# fastify-openapi-serve
 
-`fastify-openapi-merge` is a `Fastify` plugin that merges OpenAPI specifications from multiple files and serves the merged output as JSON or YAML. This plugin simplifies managing modular OpenAPI specifications, enabling dynamic merging and serving of your API definitions.
+`fastify-openapi-serve` is a `Fastify` plugin that merges OpenAPI specifications from multiple files and serves the merged output as JSON or YAML. This plugin simplifies managing modular OpenAPI specifications, enabling dynamic merging and serving of your API definitions.
 
 ## Installation
 
 Install the plugin using npm
 ```bash
-npm install fastify-openapi-merge
+npm install fastify-openapi-serve
 ```
 
 ## Usage
@@ -15,9 +15,9 @@ Register the plugin in your Fastify application and specify the required options
 ```javascript
 const path = require('node:path')
 const fastify = require('fastify')();
-const fastifyOpenapiMerge = require('fastify-openapi-merge');
+const fastifyOpenapiServe = require('fastify-openapi-serve');
 
-fastify.register(fastifyOpenapiMerge, {
+fastify.register(fastifyOpenapiServe, {
   specDir: path.join(__dirname, 'specs'), // Directory or array of directories containing OpenAPI files
   routePrefix: '/openapi', // Base route for serving the OpenAPI specification
   specDefinition: {

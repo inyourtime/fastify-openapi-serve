@@ -1,19 +1,19 @@
 import Fastify from 'fastify'
-import fastifyOpenapiMerge, { OpenAPIDocument } from '..'
+import fastifyOpenapiServe, { OpenAPIDocument } from '..'
 import { expectType } from 'tsd'
 
 const app = Fastify()
 
-app.register(fastifyOpenapiMerge, {
+app.register(fastifyOpenapiServe, {
   specDir: ''
 })
 
-app.register(fastifyOpenapiMerge, {
+app.register(fastifyOpenapiServe, {
   specDir: '',
   routePrefix: '/openapi'
 })
 
-app.register(fastifyOpenapiMerge, {
+app.register(fastifyOpenapiServe, {
   specDir: '',
   routePrefix: '/openapi',
   merge: (specs) => {
@@ -25,7 +25,7 @@ app.register(fastifyOpenapiMerge, {
   }
 })
 
-app.register(fastifyOpenapiMerge, {
+app.register(fastifyOpenapiServe, {
   specDir: '',
   routePrefix: '/openapi',
   specDefinition: {
