@@ -197,3 +197,18 @@ test('specDefinition custom', async (t) => {
     '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
   })
 })
+
+test('custom merge not a function', async (t) => {
+  t.plan(2)
+  const fastify = Fastify()
+
+  try {
+    await fastify.register(fastifyOpenapiServe, {
+      specDir: path.join(__dirname, 'specs'),
+      merge: 1
+    })
+  } catch (e) {
+    t.assert.ok(e)
+    t.assert.strictEqual(e.message, '"merge" option must be a function')
+  }
+})

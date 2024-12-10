@@ -14,6 +14,10 @@ async function fastifyOpenapiServe (fastify, opts) {
 
   checkSpecDir(fastify, specDir)
 
+  if (opts.merge && typeof opts.merge !== 'function') {
+    throw new Error('"merge" option must be a function')
+  }
+
   const rootsSpec = Array.isArray(specDir) ? specDir : [specDir]
   const specFiles = []
 
@@ -32,7 +36,7 @@ async function fastifyOpenapiServe (fastify, opts) {
     url: `${openapiPath}/json`,
     handler: async () => {
       const mergedSpec = await mergeSpec(specFiles, {
-        customMerge: opts.merge,
+        merge: opts.merge,
         specDefinition: opts.specDefinition,
       })
 
@@ -45,7 +49,7 @@ async function fastifyOpenapiServe (fastify, opts) {
     url: `${openapiPath}/yaml`,
     handler: async (_, reply) => {
       const mergedSpec = await mergeSpec(specFiles, {
-        customMerge: opts.merge,
+        merge: opts.merge,
         specDefinition: opts.specDefinition,
         yaml: true
       })
