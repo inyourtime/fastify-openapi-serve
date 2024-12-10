@@ -22,7 +22,7 @@ const fastifyOpenapiServe = require('fastify-openapi-serve');
 
 fastify.register(fastifyOpenapiServe, {
   specDir: path.join(__dirname, 'specs'), // Directory or array of directories containing OpenAPI files
-  routePrefix: '/openapi', // Base route for serving the OpenAPI specification
+  routePrefix: '/docs', // Base route for serving the OpenAPI specification
   specDefinition: {
     openapi: '3.0.0',
     info: {
@@ -42,21 +42,21 @@ fastify.listen({ port: 3000 }, (err) => {
 ## Options
 
 - `specDir` (required): directory path or an array of directory paths containing OpenAPI specification files (`.yaml`, `.yml`, `.json`).
-- `routePrefix` (optional): The base route prefix for serving the specification. Default: `/openapi`.
+- `routePrefix` (optional): The base route prefix for serving the specification. Default: `/docs`.
 - `merge` (optional): A custom function to define how multiple specifications are merged. The function receives an array of parsed specifications.
 - `specDefinition` (optional): The base OpenAPI definition that will be included in the merged result.
 
 ## Routes
 
 The plugin exposes two routes for serving the OpenAPI specification:
-- `GET <routePrefix>/json` Returns the specification in JSON format.
-- `GET <routePrefix>/yaml` Returns the specification in YAML format.
+- `GET <routePrefix>/openapi.json` Returns the specification in JSON format.
+- `GET <routePrefix>/openapi.yaml` Returns the specification in YAML format.
 
 ## Example
 
 If you set routePrefix: `'/docs'`, the plugin will expose the following routes:
-- `GET /docs/json` Serves the specification in JSON format.
-- `GET /docs/yaml` Serves the specification in YAML format.
+- `GET /docs/openapi.json` Serves the specification in JSON format.
+- `GET /docs/openapi.yaml` Serves the specification in YAML format.
 
 ## Features
 

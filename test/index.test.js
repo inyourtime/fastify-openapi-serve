@@ -31,7 +31,7 @@ test('merge with specDir (json response)', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/openapi/json',
+    url: '/docs/openapi.json',
   })
 
   const spec = res.json()
@@ -58,7 +58,7 @@ test('merge with specDir (yaml response)', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/openapi/yaml',
+    url: '/docs/openapi.yaml',
   })
 
   const spec = YAML.parse(res.payload)
@@ -85,7 +85,7 @@ test('merge with specDir array', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/openapi/json',
+    url: '/docs/openapi.json',
   })
 
   const spec = res.json()
@@ -114,7 +114,7 @@ test('custom openapiPath', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/custom/json',
+    url: '/custom/openapi.json',
   })
 
   const spec = res.json()
@@ -150,7 +150,7 @@ test('custom merge', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/openapi/json',
+    url: '/docs/openapi.json',
   })
 
   const spec = res.json()
@@ -182,7 +182,7 @@ test('specDefinition custom', async (t) => {
 
   const res = await fastify.inject({
     method: 'GET',
-    url: '/openapi/json',
+    url: '/docs/openapi.json',
   })
 
   const spec = res.json()

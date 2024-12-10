@@ -15,7 +15,7 @@ declare namespace fastifyOpenapiServe {
     specDir: string | string[]
     /**
      * OpenAPI spec path prefix
-     * @default '/openapi'
+     * @default '/docs'
      */
     routePrefix?: string
     /**

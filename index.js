@@ -12,7 +12,7 @@ const { mergeSpec } = require('./lib/merge-spec')
  * @type {import('fastify').FastifyPluginAsync}
  */
 async function fastifyOpenapiServe (fastify, opts) {
-  const openapiPath = opts.routePrefix || '/openapi'
+  const prefix = opts.routePrefix || '/docs'
   const specDir = opts.specDir
 
   checkSpecDir(fastify, specDir)
@@ -36,7 +36,7 @@ async function fastifyOpenapiServe (fastify, opts) {
 
   fastify.route({
     method: 'GET',
-    url: `${openapiPath}/json`,
+    url: `${prefix}/openapi.json`,
     handler: async () => {
       const mergedSpec = await mergeSpec(specFiles, {
         merge: opts.merge,
@@ -49,7 +49,7 @@ async function fastifyOpenapiServe (fastify, opts) {
 
   fastify.route({
     method: 'GET',
-    url: `${openapiPath}/yaml`,
+    url: `${prefix}/openapi.yaml`,
     handler: async (_, reply) => {
       const mergedSpec = await mergeSpec(specFiles, {
         merge: opts.merge,
