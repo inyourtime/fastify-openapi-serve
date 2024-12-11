@@ -10,7 +10,7 @@ const { mergeSpec } = require('./lib/merge-spec')
 const { scalarUi } = require('./lib/scalar')
 
 /**
- * @type {import('fastify').FastifyPluginAsync}
+ * @type {import('fastify').FastifyPluginAsync<import('./types').FastifyOpenapiServeOptions>}
  */
 async function fastifyOpenapiServe (fastify, opts) {
   const prefix = getPrefix(opts.routePrefix)
@@ -35,11 +35,13 @@ async function fastifyOpenapiServe (fastify, opts) {
     }))
   }
 
-  fastify.register(scalarUi, {
-    prefix,
-    cdn: opts.scalarCdn,
-    scalarConfig: opts.scalarConfig,
-  })
+  if (opts.ui !== false) {
+    fastify.register(scalarUi, {
+      prefix,
+      cdn: opts.scalarCdn,
+      scalarConfig: opts.scalarConfig,
+    })
+  }
 
   fastify.route({
     method: 'GET',
