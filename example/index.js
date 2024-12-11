@@ -20,15 +20,15 @@ fastify.register(fastifyOpenapiServe, {
 })
 
 fastify.register(fastifyApiReference, {
-  routePrefix: '/docs',
+  routePrefix: '/',
   configuration: {
     spec: {
-      url: '/openapi/json'
+      url: '/docs/openapi.json'
     }
   }
 })
 
 fastify.listen({ port: 3000 }, (err) => {
   if (err) throw err
-  console.log('Documentation available on http://localhost:3000/docs')
+  console.log('Documentation available on http://localhost:3000/')
 })
