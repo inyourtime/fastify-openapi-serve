@@ -212,3 +212,31 @@ test('custom merge not a function', async (t) => {
     t.assert.strictEqual(e.message, '"merge" option must be a function')
   }
 })
+
+test('routePrefix ends with slash', async (t) => {
+  t.plan(5)
+  const fastify = Fastify()
+
+  await fastify.register(fastifyOpenapiServe, {
+    specDir: path.join(__dirname, 'specs'),
+    routePrefix: '/docs/',
+  })
+
+  await fastify.ready()
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/docs/openapi.json',
+  })
+
+  const spec = res.json()
+
+  t.assert.strictEqual(res.statusCode, 200)
+  t.assert.strictEqual(res.headers['content-type'], 'application/json; charset=utf-8')
+  t.assert.strictEqual(spec.openapi, '3.0.0')
+  t.assert.deepStrictEqual(spec.info, { title: 'OpenAPI Spec', version: '1.0.0' })
+  t.assert.deepStrictEqual(spec.paths, {
+    '/foo': { get: { summary: 'Foo', responses: { 200: { description: 'OK' } } } },
+    '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
+  })
+})
