@@ -240,3 +240,43 @@ test('routePrefix ends with slash', async (t) => {
     '/bar': { get: { summary: 'Bar', responses: { 200: { description: 'OK' } } } },
   })
 })
+
+test('should get 200 on UI page', async (t) => {
+  t.plan(4)
+  const fastify = Fastify()
+
+  await fastify.register(fastifyOpenapiServe, {
+    specDir: path.join(__dirname, 'specs'),
+  })
+
+  await fastify.ready()
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/docs',
+  })
+
+  t.assert.strictEqual(res.statusCode, 200)
+  t.assert.strictEqual(res.headers['content-type'], 'text/html')
+  t.assert.match(res.payload, /<title>Scalar API Reference<\/title>/)
+  t.assert.match(res.payload, /<script src="https:\/\/cdn.jsdelivr.net\/npm\/@scalar\/api-reference"><\/script>/)
+})
+
+test('set ui to false', async (t) => {
+  t.plan(1)
+  const fastify = Fastify()
+
+  await fastify.register(fastifyOpenapiServe, {
+    specDir: path.join(__dirname, 'specs'),
+    ui: false
+  })
+
+  await fastify.ready()
+
+  const res = await fastify.inject({
+    method: 'GET',
+    url: '/docs',
+  })
+
+  t.assert.strictEqual(res.statusCode, 404)
+})
