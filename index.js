@@ -6,14 +6,11 @@ const fp = require('fastify-plugin')
 const { glob } = require('glob')
 
 const { checkSpecDir } = require('./lib/spec-dir')
-const { mergeSpec } = require('./lib/merge-spec')
-const { scalarUi } = require('./lib/scalar')
 
 /**
  * @type {import('fastify').FastifyPluginAsync<import('./types').FastifyOpenapiServeOptions>}
  */
 async function fastifyOpenapiServe (fastify, opts) {
-  const prefix = getPrefix(opts.routePrefix)
   const specDir = opts.specDir
 
   checkSpecDir(fastify, specDir)
@@ -35,48 +32,11 @@ async function fastifyOpenapiServe (fastify, opts) {
     }))
   }
 
-  if (opts.ui !== false) {
-    fastify.register(scalarUi, {
-      prefix,
-      cdn: opts.scalarCdn,
-      scalarConfig: opts.scalarConfig,
-    })
-  }
-
-  fastify.route({
-    method: 'GET',
-    url: `${prefix}/openapi.json`,
-    handler: async () => {
-      const mergedSpec = await mergeSpec(specFiles, {
-        merge: opts.merge,
-        specDefinition: opts.specDefinition,
-      })
-
-      return mergedSpec
-    },
+  await fastify.register(require('./lib/routes'), {
+    prefix: opts.routePrefix || '/docs',
+    specFiles,
+    ...opts
   })
-
-  fastify.route({
-    method: 'GET',
-    url: `${prefix}/openapi.yaml`,
-    handler: async (_, reply) => {
-      const mergedSpec = await mergeSpec(specFiles, {
-        merge: opts.merge,
-        specDefinition: opts.specDefinition,
-        yaml: true
-      })
-
-      return reply
-        .type('application/x-yaml')
-        .send(mergedSpec)
-    },
-  })
-}
-
-function getPrefix (prefix) {
-  prefix = prefix || '/docs'
-
-  return prefix.endsWith('/') ? prefix.slice(0, -1) : prefix
 }
 
 module.exports = fp(fastifyOpenapiServe, {

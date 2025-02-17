@@ -39,7 +39,7 @@ declare namespace fastifyOpenapiServe {
      */
     scalarConfig?: ReferenceConfiguration
     /**
-     * UI cdn
+     * Scalar cdn
      * @default 'https://cdn.jsdelivr.net/npm/@scalar/api-reference'
      */
     scalarCdn?: string
