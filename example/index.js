@@ -1,7 +1,7 @@
+'use strict'
+
 const path = require('node:path')
-
 const Fastify = require('fastify')
-
 const fastifyOpenapiServe = require('..')
 
 const fastify = Fastify()
