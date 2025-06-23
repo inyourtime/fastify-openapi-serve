@@ -37,7 +37,7 @@
     "yaml": "^2.6.1"
   },
   "devDependencies": {
-    "@types/node": "^22.10.1",
+    "@types/node": "^24.0.3",
     "c8": "^10.1.2",
     "eslint": "^9.16.0",
     "fastify": "^5.1.0",
