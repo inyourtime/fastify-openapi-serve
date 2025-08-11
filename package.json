@@ -42,7 +42,7 @@
     "eslint": "^9.16.0",
     "fastify": "^5.1.0",
     "neostandard": "^0.12.1",
-    "tsd": "^0.32.0"
+    "tsd": "^0.33.0"
   },
   "files": [
     "lib",
